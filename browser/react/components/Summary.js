@@ -7,7 +7,8 @@ class Summary extends Component {
   constructor() {
     super()
     this.state = {
-      products: []
+      products: [],
+      categories: []
     }
     this.onDeleteHandler = this.onDeleteHandler.bind(this)
     this.onSaveHandler = this.onSaveHandler.bind(this)
@@ -17,6 +18,10 @@ class Summary extends Component {
     axios.get('/api/products')
     .then(response=> response.data)
     .then(products=> this.setState({ products }))
+
+    axios.get('/api/categories')
+    .then(response=> response.data)
+    .then(categories=> this.setState({ categories }))
   }
 
   onDeleteHandler(prod) {
@@ -33,28 +38,33 @@ class Summary extends Component {
 
   onSaveHandler(prod) {
     // update or save
-    let { products } = this.state
+    let { products, categories } = this.state
     if (prod.id) {
       axios.put(`/api/products/${prod.id}`, prod)
       .then(response=> {
         const index = products.findIndex(p=> p.id == prod.id)
         products[index] = prod
-        this.setState({ products })
+        this.setState({ products, categories })
       })
     }
     else {
       prod.categoryId = prod.categoryId || null
       axios.post('api/products', prod)
-      .then(response=> {
-        products = [ ...products, prod ]
-        this.setState({ products })
+      .then(response=> response.data)
+      .then(_prod=> {
+        products = [ ...products, _prod ]
+        // categories.products = [ ...categories.products, _prod ]
+        this.setState({ products, categories })
       })
     }
   }
 
   render() {
-    const { products } = this.state
+    const { products, categories } = this.state
     const { onDeleteHandler, onSaveHandler } = this
+
+    const mostExpensive = products.sort((a, b)=> a.price < b.price)[0]
+    const notInStock = products.filter(prod=> !prod.inStock).map(prod=> prod.name).join(' ')
 
     return (
       <div>
@@ -65,8 +75,12 @@ class Summary extends Component {
         <div>
           There are { products.length } products
           {
-
+            categories.map(category=> (
+              <li key={ category.id }>{ category.name } has { category.products.length } products.</li>
+            ))
           }
+          { products.length ? <span>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</span> : null }
+          { notInStock.length ? <span>Products not in stock are { notInStock }</span> : null }
         </div>
       </div>
     )

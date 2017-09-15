@@ -9,7 +9,7 @@ class ProductForm extends Component {
       product: {
         name: '',
         price: '',
-        instock: false,
+        inStock: false,
         categoryId: 0
       }
     }
@@ -39,12 +39,14 @@ class ProductForm extends Component {
         product.price = value
         this.setState({ product })
         break
-      case 'instock':
-        product.instock = value
+      case 'inStock':
+        product.inStock = value
         this.setState({ product })
         break
       case 'category':
-
+        product.categoryId = value
+        this.setState({ product })
+        break;
       default:
     }
   }
@@ -53,6 +55,13 @@ class ProductForm extends Component {
     ev.preventDefault()
     const { onSaveHandler } = this.props
     onSaveHandler(this.state.product)
+    const product = {
+      name: '',
+      price: '',
+      inStock: false,
+      categoryId: 0
+    }
+    if (!this.props.product) this.setState({ product })
   }
 
   onDelete(ev) {
@@ -62,7 +71,7 @@ class ProductForm extends Component {
   }
 
   render() {
-    // const { categories, name, price, instock, category } = this.state
+    // const { categories, name, price, inStock, category } = this.state
     const { categories, product } = this.state
     const { onDeleteHandler, onSaveHandler } = this.props
     const { onChangeHandler, onSave, onDelete } = this
@@ -80,13 +89,13 @@ class ProductForm extends Component {
         </fieldset>
 
         <fieldset>
-          <label htmlFor='instock'>Instock</label>
-          <input name='instock' type='checkbox' checked={ product.instock ? true : false } onChange={ onChangeHandler }/>
+          <label htmlFor='inStock'>Instock</label>
+          <input name='inStock' type='checkbox' checked={ product.inStock ? true : false } onChange={ onChangeHandler }/>
         </fieldset>
 
         <fieldset>
           <label htmlFor='category'>Category</label>
-          <select name='category' value={ product.category ? product.category.id : 0 } onChange={ onChangeHandler }>
+          <select name='category' value={ product.categoryId } onChange={ onChangeHandler }>
             <option>-- none --</option>
           {
             categories.map(category=> (

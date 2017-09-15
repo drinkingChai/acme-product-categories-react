@@ -97,7 +97,7 @@ app.put('/api/products/:id', (req, res, next)=>{
 
 app.post('/api/products/', (req, res, next)=>{
   Product.create(req.body)
-    .then(()=> res.sendStatus(204))
+    .then(prod=> res.send(prod))
     .catch(next);
 });
 
