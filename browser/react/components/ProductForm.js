@@ -6,13 +6,15 @@ class ProductForm extends Component {
     super()
     this.state = {
       categories: [],
-      name: '',
-      price: '',
-      instock: false,
-      category: 0
+      product: {
+        name: '',
+        price: '',
+        instock: false,
+        category: 0
+      }
     }
+    this.onSave = this.onSave.bind(this)
     this.onChangeHandler = this.onChangeHandler.bind(this)
-    this.onSaveHandler = this.onSaveHandler.bind(this)
   }
 
   componentDidMount() {
@@ -20,68 +22,64 @@ class ProductForm extends Component {
     .then(response=> response.data)
     .then(categories=> this.setState({ categories }))
 
-    if (this.props.product) {
-      const { name, price, instock, category } = this.props.product
-      this.setState({ name, price, instock, category })
-    }
+    if (this.props.product) this.setState({ product: this.props.product })
   }
 
   onChangeHandler(ev) {
     const { name, value } = ev.target
+    const { product } = this.state
+
     switch (name) {
       case 'name':
-        this.setState({ name: value })
-        break;
+        product.name = value
+        this.setState({ product })
+        break
       case 'price':
-        this.setState({ price: value })
-        break;
+        product.price = value
+        this.setState({ product })
+        break
       case 'instock':
-        this.setState({ instock: ev.target.checked })
-        break;
+        product.instock = value
+        this.setState({ product })
+        break
       case 'category':
 
-        break;
       default:
-
     }
   }
 
-  onSaveHandler(ev) {
-    // if this.props.product, update
-    // else post
+  onSave(ev) {
     ev.preventDefault()
-    if (this.props.product) {
-      console.log('updating!');
-    } else {
-      console.log('creating!');
-    }
+    const { onSaveHandler } = this.props
+    onSaveHandler(this.state.product)
   }
 
   render() {
-    const { categories, name, price, instock, category } = this.state
-    const { onChangeHandler, onSaveHandler } = this
-    const { onDeleteHandler } = this.props
+    // const { categories, name, price, instock, category } = this.state
+    const { categories, product } = this.state
+    const { onDeleteHandler, onSaveHandler } = this.props
+    const { onChangeHandler, onSave } = this
 
     return (
       <form>
         <fieldset>
           <label htmlFor='name'>Name</label>
-          <input name='name' value={ name } onChange={ onChangeHandler }/>
+          <input name='name' value={ product.name } onChange={ onChangeHandler }/>
         </fieldset>
 
         <fieldset>
           <label htmlFor='price'>Price</label>
-          <input name='price' type='number' value={ price } onChange={ onChangeHandler }/>
+          <input name='price' type='number' value={ product.price } onChange={ onChangeHandler }/>
         </fieldset>
 
         <fieldset>
           <label htmlFor='instock'>Instock</label>
-          <input name='instock' type='checkbox' checked={ instock ? true : false } onChange={ onChangeHandler }/>
+          <input name='instock' type='checkbox' checked={ product.instock ? true : false } onChange={ onChangeHandler }/>
         </fieldset>
 
         <fieldset>
           <label htmlFor='category'>Category</label>
-          <select name='category' value={ category ? category.id : 0 } onChange={ onChangeHandler }>
+          <select name='category' value={ product.category ? product.category.id : 0 } onChange={ onChangeHandler }>
             <option>-- none --</option>
           {
             categories.map(category=> (
@@ -92,7 +90,7 @@ class ProductForm extends Component {
         </fieldset>
 
         <fieldset>
-          <button onClick={ onSaveHandler }>Save</button>
+          <button onClick={ onSave }>Save</button>
           { this.props.product ? <button onClick={ onDeleteHandler }>Delete</button> : null }
         </fieldset>
       </form>

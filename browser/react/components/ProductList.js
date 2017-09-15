@@ -5,17 +5,10 @@ import axios from 'axios'
 class ProductList extends Component {
   constructor() {
     super()
-    this.onDeleteHandler = this.onDeleteHandler.bind(this)
-  }
-
-  onDeleteHandler(ev) {
-    ev.preventDefault()
-    console.log('deleting!');
   }
 
   render() {
-    const { products } = this.props
-    const { onDeleteHandler } = this
+    const { products, onDeleteHandler, onSaveHandler } = this.props
 
     return (
       <div>
@@ -24,6 +17,7 @@ class ProductList extends Component {
           <ProductForm
             product={product}
             key={ product.id }
+            onSaveHandler={ onSaveHandler }
             onDeleteHandler={ onDeleteHandler }/>
         ))
       }
