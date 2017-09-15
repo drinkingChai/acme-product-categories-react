@@ -40,7 +40,7 @@ class ProductForm extends Component {
         this.setState({ product })
         break
       case 'inStock':
-        product.inStock = value
+        product.inStock = !product.inStock
         this.setState({ product })
         break
       case 'category':
@@ -95,8 +95,8 @@ class ProductForm extends Component {
 
         <fieldset>
           <label htmlFor='category'>Category</label>
-          <select name='category' value={ product.categoryId } onChange={ onChangeHandler }>
-            <option>-- none --</option>
+          <select name='category' value={ product.categoryId || 0 } onChange={ onChangeHandler }>
+            <option value={ 0 }>-- none --</option>
           {
             categories.map(category=> (
               <option key={ category.id } value={ category.id }>{ category.name }</option>

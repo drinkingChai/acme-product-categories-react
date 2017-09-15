@@ -40,11 +40,15 @@ class Summary extends Component {
     // update or save
     let { products, categories } = this.state
     if (prod.id) {
+      prod.categoryId = prod.categoryId != 0 ? prod.categoryId : null
       axios.put(`/api/products/${prod.id}`, prod)
       .then(response=> {
-        const index = products.findIndex(p=> p.id == prod.id)
-        products[index] = prod
-        this.setState({ products, categories })
+        categories.forEach(cat=> {
+          cat.products = cat.products.filter(p=> p.id != prod.id)
+        })
+        const cat = categories.find(cat=> cat.id == prod.categoryId)
+        if (cat) cat.products.push(prod)
+        this.setState({ categories })
       })
     }
     else {
@@ -53,7 +57,9 @@ class Summary extends Component {
       .then(response=> response.data)
       .then(_prod=> {
         products = [ ...products, _prod ]
-        // categories.products = [ ...categories.products, _prod ]
+        if (prod.categoryId) {
+          categories.find(cat=> cat.id == prod.categoryId).products.push(_prod)
+        }
         this.setState({ products, categories })
       })
     }
@@ -63,7 +69,7 @@ class Summary extends Component {
     const { products, categories } = this.state
     const { onDeleteHandler, onSaveHandler } = this
 
-    const mostExpensive = products.sort((a, b)=> a.price < b.price)[0]
+    const mostExpensive = products.map(prod=> prod).sort((a, b)=> a.price < b.price)[0]
     const notInStock = products.filter(prod=> !prod.inStock).map(prod=> prod.name).join(' ')
 
     return (
