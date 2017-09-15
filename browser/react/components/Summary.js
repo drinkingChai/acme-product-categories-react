@@ -19,15 +19,37 @@ class Summary extends Component {
     .then(products=> this.setState({ products }))
   }
 
-  onDeleteHandler(ev) {
-    ev.preventDefault()
+  onDeleteHandler(prod) {
+    let { products } = this.state
     console.log('deleting!');
+    console.log(prod.id);
+    axios.delete(`/api/products/${prod.id}`)
+    .then(response=> response.data)
+    .then(()=> {
+      products = products.filter(product=> product.id != prod.id)
+      this.setState({ products })
+    })
   }
 
   onSaveHandler(prod) {
     // update or save
-    if (prod.id) console.log('updating!');
-    else console.log('creating!');
+    let { products } = this.state
+    if (prod.id) {
+      axios.put(`/api/products/${prod.id}`, prod)
+      .then(response=> {
+        const index = products.findIndex(p=> p.id == prod.id)
+        products[index] = prod
+        this.setState({ products })
+      })
+    }
+    else {
+      prod.categoryId = prod.categoryId || null
+      axios.post('api/products', prod)
+      .then(response=> {
+        products = [ ...products, prod ]
+        this.setState({ products })
+      })
+    }
   }
 
   render() {

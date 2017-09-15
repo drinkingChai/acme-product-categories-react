@@ -10,10 +10,11 @@ class ProductForm extends Component {
         name: '',
         price: '',
         instock: false,
-        category: 0
+        categoryId: 0
       }
     }
     this.onSave = this.onSave.bind(this)
+    this.onDelete = this.onDelete.bind(this)
     this.onChangeHandler = this.onChangeHandler.bind(this)
   }
 
@@ -54,11 +55,17 @@ class ProductForm extends Component {
     onSaveHandler(this.state.product)
   }
 
+  onDelete(ev) {
+    ev.preventDefault()
+    const { onDeleteHandler } = this.props
+    onDeleteHandler(this.state.product)
+  }
+
   render() {
     // const { categories, name, price, instock, category } = this.state
     const { categories, product } = this.state
     const { onDeleteHandler, onSaveHandler } = this.props
-    const { onChangeHandler, onSave } = this
+    const { onChangeHandler, onSave, onDelete } = this
 
     return (
       <form>
@@ -91,7 +98,7 @@ class ProductForm extends Component {
 
         <fieldset>
           <button onClick={ onSave }>Save</button>
-          { this.props.product ? <button onClick={ onDeleteHandler }>Delete</button> : null }
+          { product.id ? <button onClick={ onDelete }>Delete</button> : null }
         </fieldset>
       </form>
     )
