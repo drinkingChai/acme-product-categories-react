@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ProductForm from './ProductForm'
 import axios from 'axios'
 
 class Summary extends Component {
@@ -29,14 +30,20 @@ class Summary extends Component {
 
     return (
       <div>
-        There are { products.length } products
-        <hr/>
-        {
-          categories.map(cat=> <p key={ cat.id }>{ cat.name } has { cat.products.length } prodcuts.</p>)
-        }
-        { noCat.length ? <p>{ noCat.length } product(s) have no categories.</p> : null }
-        <hr/>
-        { products.length ? <p>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</p> : null } 
+        <div className='col-3'>
+          <ProductForm categories={ categories }/>
+        </div>
+
+        <div className='col-3 col-md-3'>
+          There are { products.length } products
+          <hr/>
+          {
+            categories.map(cat=> <p key={ cat.id }>{ cat.name } has { cat.products.length } prodcuts.</p>)
+          }
+          { noCat.length ? <p>{ noCat.length } product(s) have no categories.</p> : null }
+          <hr/>
+          { products.length ? <p>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</p> : null } 
+        </div>
       </div>
     )
   }
