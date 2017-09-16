@@ -16,8 +16,21 @@ class ProductForm extends Component {
   }
 
   onChangeHandler(ev) {
-    ev.preventDefault()
     console.log('changed!')
+
+    const { name, value } = ev.target
+    switch(name) {
+      case 'name':
+        this.setState({ name: value })
+        break
+      case 'price':
+        this.setState({ price: value * 1 })
+        break
+      case 'inStock':
+        this.setState({ inStock: !this.state.inStock })
+        break
+      default:
+    }
   }
 
   onSubmitHandler(ev) {
@@ -43,8 +56,8 @@ class ProductForm extends Component {
           <input name='price' value={ price } type='number' onChange={ onChangeHandler }/>
         </div>
 
-        <div>
-          <input name='inStock' id={ inStockId } value={ inStock } type='checkbox' onChange={ onChangeHandler }/>
+        <div className='input-group'>
+          <input name='inStock' id={ inStockId } checked={ inStock } type='checkbox' onChange={ onChangeHandler }/>
           <label htmlFor={ inStockId }>In stock</label>
         </div>
 
