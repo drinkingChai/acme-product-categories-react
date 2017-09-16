@@ -74,25 +74,31 @@ class Summary extends Component {
 
     return (
       <div>
-        <ProductList products={ products } onSaveHandler={ onSaveHandler } onDeleteHandler={ onDeleteHandler } />
-
-        <div className='col-3 col-md-3'>
-          <h4>Add Product</h4>
-          <ProductForm onSaveHandler={ onSaveHandler }/>
+        <div className='col-6 col-md-6'>
+          <ProductList products={ products } onSaveHandler={ onSaveHandler } onDeleteHandler={ onDeleteHandler } />
         </div>
 
         <div className='col-3 col-md-3'>
-          <div className='card'>
-          There are { products.length } products
-          <hr/>
-          {
-            categories.map(category=> (
-              <li key={ category.id }>{ category.name } has { category.products.length } products.</li>
-            ))
-          }
-          <hr/>
-          <p>{ products.length ? <span>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</span> : null }</p>
-          { notInStock.length ? <span>Products not in stock are { notInStock }</span> : null }
+          <div className='col-12 col-md-12'>
+          <h4>Add Product</h4>
+          <ProductForm onSaveHandler={ onSaveHandler }/>
+          </div>
+        </div>
+
+        <div className='col-3 col-md-3'>
+          <div className='col-12 col-md-12'>
+            <div className='card'>
+            There are { products.length } products
+            <hr/>
+            {
+              categories.map(category=> (
+                <li key={ category.id }>{ category.name } has { category.products.length } products.</li>
+              ))
+            }
+            <hr/>
+            <p>{ products.length ? <span>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</span> : null }</p>
+            { notInStock.length ? <span>Products not in stock are { notInStock }</span> : null }
+            </div>
           </div>
         </div>
       </div>
