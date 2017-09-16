@@ -75,18 +75,25 @@ class Summary extends Component {
     return (
       <div>
         <ProductList products={ products } onSaveHandler={ onSaveHandler } onDeleteHandler={ onDeleteHandler } />
-        Add Product
-        <ProductForm onSaveHandler={ onSaveHandler }/>
 
-        <div>
+        <div className='col-3 col-md-3'>
+          <h4>Add Product</h4>
+          <ProductForm onSaveHandler={ onSaveHandler }/>
+        </div>
+
+        <div className='col-3 col-md-3'>
+          <div className='card'>
           There are { products.length } products
+          <hr/>
           {
             categories.map(category=> (
               <li key={ category.id }>{ category.name } has { category.products.length } products.</li>
             ))
           }
-          { products.length ? <span>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</span> : null }
+          <hr/>
+          <p>{ products.length ? <span>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</span> : null }</p>
           { notInStock.length ? <span>Products not in stock are { notInStock }</span> : null }
+          </div>
         </div>
       </div>
     )

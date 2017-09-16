@@ -1,0 +1,11 @@
+button {
+  margin-right: 5px; }
+
+header {
+  height: 4em; }
+
+form, .card {
+  padding: 10px;
+  border: solid 1px #DDD;
+  border-radius: 3px;
+  background-color: #F9F9F9; }

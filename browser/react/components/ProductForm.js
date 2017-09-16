@@ -88,9 +88,12 @@ class ProductForm extends Component {
           <input name='price' type='number' value={ product.price } onChange={ onChangeHandler }/>
         </fieldset>
 
-        <fieldset>
-          <label htmlFor='inStock'>Instock</label>
-          <input name='inStock' type='checkbox' checked={ product.inStock ? true : false } onChange={ onChangeHandler }/>
+        <fieldset className='input-group'>
+          <input name='inStock' id={ `inStock${product.id || 0}` }
+            type='checkbox'
+            checked={ product.inStock ? true : false }
+            onChange={ onChangeHandler }/>
+          <label htmlFor={ `inStock${product.id || 0}` }>Instock</label>
         </fieldset>
 
         <fieldset>
@@ -106,8 +109,8 @@ class ProductForm extends Component {
         </fieldset>
 
         <fieldset>
-          <button onClick={ onSave }>Save</button>
-          { product.id ? <button onClick={ onDelete }>Delete</button> : null }
+          <button onClick={ onSave } className='btn btn-blue'>Save</button>
+          { product.id ? <button onClick={ onDelete } className='btn btn-red'>Delete</button> : null }
         </fieldset>
       </form>
     )

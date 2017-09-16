@@ -5,14 +5,15 @@ const ProductList = (props) => {
   const { products, onDeleteHandler, onSaveHandler } = props
 
   return (
-    <div>
+    <div className='col-6 col-md-6'>
     {
       products.map(product=> (
-        <ProductForm
-          product={product}
-          key={ product.id }
-          onSaveHandler={ onSaveHandler }
-          onDeleteHandler={ onDeleteHandler }/>
+        <div className='col-4 col-md-4' key={ product.id }>
+          <ProductForm
+            product={product}
+            onSaveHandler={ onSaveHandler }
+            onDeleteHandler={ onDeleteHandler }/>
+        </div>
       ))
     }
     </div>

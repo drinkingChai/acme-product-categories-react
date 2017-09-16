@@ -61,6 +61,7 @@ conn.sync({ force: true })
 
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
 app.use('/vendor', express.static(path.join(__dirname, 'node_modules')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res, next)=> res.sendFile(path.join(__dirname, 'index.html')));
 
@@ -85,7 +86,6 @@ app.get('/api/categories', (req, res, next)=> {
 app.put('/api/products/:id', (req, res, next)=>{
   Product.findById(req.params.id)
     .then( product => {
-      console.log(req.body);
       if(!req.body.categoryId){
         req.body.categoryId = null;
       }
