@@ -41,7 +41,7 @@ class Summary extends Component {
     let { products, categories } = this.state
     if (prod.id) {
       prod.categoryId = prod.categoryId != 0 ? prod.categoryId : null
-      axios.put(`/api/products/${prod.id}`, prod)
+      return axios.put(`/api/products/${prod.id}`, prod)
       .then(response=> {
         categories.forEach(cat=> {
           cat.products = cat.products.filter(p=> p.id != prod.id)
@@ -53,7 +53,7 @@ class Summary extends Component {
     }
     else {
       prod.categoryId = prod.categoryId || null
-      axios.post('api/products', prod)
+      return axios.post('api/products', prod)
       .then(response=> response.data)
       .then(_prod=> {
         products = [ ...products, _prod ]

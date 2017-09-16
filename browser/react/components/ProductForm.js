@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import Error from './Error'
 
 class ProductForm extends Component {
   constructor() {
@@ -55,6 +56,10 @@ class ProductForm extends Component {
     ev.preventDefault()
     const { onSaveHandler } = this.props
     onSaveHandler(this.state.product)
+    .then(response=> {
+      console.log(response);
+    })
+    .catch(err=> console.log(err))
     const product = {
       name: '',
       price: '',
@@ -85,7 +90,7 @@ class ProductForm extends Component {
 
         <fieldset>
           <label htmlFor='price'>Price</label>
-          <input name='price' type='number' value={ product.price } onChange={ onChangeHandler }/>
+          <input name='price' type='number' value={ product.price || 0 } onChange={ onChangeHandler }/>
         </fieldset>
 
         <fieldset className='input-group'>
