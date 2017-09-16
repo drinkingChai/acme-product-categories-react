@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "webpack & npm run buildonce",
+    "postinstall": "webpack",
     "start:dev": "webpack -w & DATABASE_URL=postgres://localhost/acmeprodcatreact nodemon server.js --ignore browser/ --ignore dist/",
     "start": "node server.js",
     "build:css": "node-sass -w scss/ -o public/",
