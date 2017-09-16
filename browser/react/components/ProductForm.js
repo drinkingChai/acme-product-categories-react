@@ -118,8 +118,8 @@ class ProductForm extends Component {
         </fieldset>
 
         <fieldset>
-          <button onClick={ onSave } className='btn btn-blue' disabled={ product.name.length ? false : true }>Save</button>
-          { product.id ? <button onClick={ onDelete } className='btn btn-red'>Delete</button> : null }
+          <button onClick={ onSave } className='btn btn-blue-filled' disabled={ product.name.length ? false : true }>Save</button>
+          { product.id ? <button onClick={ onDelete } className='btn btn-red-filled'>Delete</button> : null }
         </fieldset>
       </form>
     )

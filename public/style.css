@@ -20,3 +20,13 @@ form, .card {
   background-color: #ff9999;
   color: #990000;
   border-radius: 3px; }
+
+.btn-blue-filled {
+  background-color: #0074D9;
+  color: #fff;
+  border-width: 0; }
+
+.btn-red-filled {
+  background-color: #FF4136;
+  color: #fff;
+  border-width: 0; }
