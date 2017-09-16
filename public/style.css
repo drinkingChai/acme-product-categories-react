@@ -10,3 +10,13 @@ form, .card {
   border: solid 1px #DDD;
   border-radius: 3px;
   background-color: #F9F9F9; }
+
+.btn:disabled {
+  cursor: not-allowed; }
+
+.error {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff9999;
+  color: #990000;
+  border-radius: 3px; }

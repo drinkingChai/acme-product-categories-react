@@ -4,7 +4,7 @@ app.use(require('body-parser').json());
 const path = require('path');
 
 const Sequelize = require('sequelize');
-const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/my_db');
+const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/my_db', { logging: false });
 
 const Product = conn.define('product', {
   name: {

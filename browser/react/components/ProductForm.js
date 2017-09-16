@@ -9,10 +9,11 @@ class ProductForm extends Component {
       categories: [],
       product: {
         name: '',
-        price: '',
+        price: 0,
         inStock: false,
         categoryId: 0
-      }
+      },
+      error: ''
     }
     this.onSave = this.onSave.bind(this)
     this.onDelete = this.onDelete.bind(this)
@@ -37,7 +38,7 @@ class ProductForm extends Component {
         this.setState({ product })
         break
       case 'price':
-        product.price = value
+        product.price = value*1
         this.setState({ product })
         break
       case 'inStock':
@@ -56,17 +57,19 @@ class ProductForm extends Component {
     ev.preventDefault()
     const { onSaveHandler } = this.props
     onSaveHandler(this.state.product)
-    .then(response=> {
-      console.log(response);
+    .then(()=> {
+      const product = {
+        name: '',
+        price: 0,
+        inStock: false,
+        categoryId: 0
+      }
+      if (!this.props.product) this.setState({ product })
     })
-    .catch(err=> console.log(err))
-    const product = {
-      name: '',
-      price: '',
-      inStock: false,
-      categoryId: 0
-    }
-    if (!this.props.product) this.setState({ product })
+    .catch(err=> {
+      const { error } = this.state
+      this.setState({ error: err.response.data.errors[0].message })
+    })
   }
 
   onDelete(ev) {
@@ -77,12 +80,13 @@ class ProductForm extends Component {
 
   render() {
     // const { categories, name, price, inStock, category } = this.state
-    const { categories, product } = this.state
+    const { categories, product, error } = this.state
     const { onDeleteHandler, onSaveHandler } = this.props
     const { onChangeHandler, onSave, onDelete } = this
 
     return (
       <form>
+        { error.length ? <Error message={ error }/> : null }
         <fieldset>
           <label htmlFor='name'>Name</label>
           <input name='name' value={ product.name } onChange={ onChangeHandler }/>
@@ -90,7 +94,7 @@ class ProductForm extends Component {
 
         <fieldset>
           <label htmlFor='price'>Price</label>
-          <input name='price' type='number' value={ product.price || 0 } onChange={ onChangeHandler }/>
+          <input name='price' type='number' value={ product.price } onChange={ onChangeHandler }/>
         </fieldset>
 
         <fieldset className='input-group'>
@@ -114,7 +118,7 @@ class ProductForm extends Component {
         </fieldset>
 
         <fieldset>
-          <button onClick={ onSave } className='btn btn-blue'>Save</button>
+          <button onClick={ onSave } className='btn btn-blue' disabled={ product.name.length ? false : true }>Save</button>
           { product.id ? <button onClick={ onDelete } className='btn btn-red'>Delete</button> : null }
         </fieldset>
       </form>
