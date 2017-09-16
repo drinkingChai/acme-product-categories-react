@@ -75,13 +75,18 @@ class Summary extends Component {
     return (
       <div>
         <div className='col-6 col-md-6'>
-          <ProductList products={ products } onSaveHandler={ onSaveHandler } onDeleteHandler={ onDeleteHandler } />
+          <ProductList products={ products }
+            categories={ categories }
+            onSaveHandler={ onSaveHandler } 
+            onDeleteHandler={ onDeleteHandler } />
         </div>
 
         <div className='col-3 col-md-3'>
           <div className='col-12 col-md-12'>
           <h4>Add Product</h4>
-          <ProductForm onSaveHandler={ onSaveHandler }/>
+          <ProductForm 
+            onSaveHandler={ onSaveHandler }
+            categories={ categories }/>
           </div>
         </div>
 

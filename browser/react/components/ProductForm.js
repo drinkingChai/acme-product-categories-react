@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Error from './Error'
 
 class ProductForm extends Component {
@@ -21,10 +20,6 @@ class ProductForm extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/categories')
-    .then(response=> response.data)
-    .then(categories=> this.setState({ categories }))
-
     if (this.props.product) this.setState({ product: this.props.product })
   }
 
@@ -80,8 +75,8 @@ class ProductForm extends Component {
 
   render() {
     // const { categories, name, price, inStock, category } = this.state
-    const { categories, product, error } = this.state
-    const { onDeleteHandler, onSaveHandler } = this.props
+    const { product, error } = this.state
+    const { categories, onDeleteHandler, onSaveHandler } = this.props
     const { onChangeHandler, onSave, onDelete } = this
 
     return (
