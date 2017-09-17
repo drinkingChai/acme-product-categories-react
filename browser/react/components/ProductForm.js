@@ -9,10 +9,18 @@ class ProductForm extends Component {
       name: '',
       price: 0,
       inStock: false,
-      categoryId: null
+      categoryId: null,
+      id: 0
     }
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onSubmitHandler = this.onSubmitHandler.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.product) {
+      const { name, price, inStock, categoryId, id } = this.props.product
+      this.setState({ name, price, inStock, categoryId, id })
+    }
   }
 
   onChangeHandler(ev) {
@@ -29,6 +37,9 @@ class ProductForm extends Component {
       case 'inStock':
         this.setState({ inStock: !this.state.inStock })
         break
+      case 'categoryId':
+        this.setState({ categoryId: value })
+        break
       default:
     }
   }
@@ -39,8 +50,8 @@ class ProductForm extends Component {
   }
 
   render() {
-    const { name, price, inStock, categoryId } = this.state
-    const { product, categories } = this.props
+    const { product, categories, updateHandler, createHandler, deleteHandler } = this.props
+    const { name, price, inStock, categoryId, id } = this.state
     const { onChangeHandler, onSubmitHandler } = this
     const inStockId = `inStock${ product ? product.id : 0 }`
 
@@ -61,15 +72,15 @@ class ProductForm extends Component {
           <label htmlFor={ inStockId }>In stock</label>
         </div>
 
-        <select>
+        <select name='categoryId' value={ categoryId || 0 } onChange={ onChangeHandler }>
           <option value={ 0 }>-- none --</option>
-        {
-          categories.map(cat=> <option value={ cat.id } key={ cat.id }>{ cat.name }</option>)
-        }
+          {
+            categories.map(cat=> <option value={ cat.id } key={ cat.id }>{ cat.name }</option>)
+          }
         </select>
 
-        <button>Save</button>
-        <button>Delete</button>
+        <button className='btn-blue-filled'>Save</button>
+        { deleteHandler ? <button className='btn-red-filled'>Delete</button> : null }
       </form>
     )
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ProductForm from './ProductForm'
+import ProductList from './ProductList'
 import axios from 'axios'
 
 class Summary extends Component {
@@ -10,6 +11,9 @@ class Summary extends Component {
       products: [],
       categories: []
     }
+    this.createHandler = this.createHandler.bind(this)
+    this.updateHandler = this.updateHandler.bind(this)
+    this.deleteHandler = this.deleteHandler.bind(this)
   } 
 
   componentDidMount() {
@@ -23,18 +27,41 @@ class Summary extends Component {
     })
   }
 
+  createHandler() {
+  }
+
+  updateHandler() {
+  }
+
+  deleteHandler() {
+  }
+
   render() {
     const { products, categories } = this.state
+    const { createHandler, updateHandler, deleteHandler } = this
     const mostExpensive = products.map(p=> p).sort((a, b)=> a.price < b.price)[0]
     const noCat = products.filter(p=> !p.categoryId)
 
     return (
       <div>
-        <div className='col-3'>
-          <ProductForm categories={ categories }/>
+        <div className='col-6 col-md-6'>
+          <ProductList 
+            products={ products } 
+            categories={ categories }
+            updateHandler={ updateHandler }
+            deleteHandler={ deleteHandler }/>
         </div>
 
         <div className='col-3 col-md-3'>
+          <div className='col-12 col-sm-6'>
+            <ProductForm 
+              categories={ categories }
+              createHandler={ createHandler }/>
+          </div>
+        </div>
+
+        <div className='col-3 col-md-3'>
+          <div className='col-12 col-sm-6'>
           There are { products.length } products
           <hr/>
           {
@@ -43,6 +70,7 @@ class Summary extends Component {
           { noCat.length ? <p>{ noCat.length } product(s) have no categories.</p> : null }
           <hr/>
           { products.length ? <p>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</p> : null } 
+          </div>
         </div>
       </div>
     )
