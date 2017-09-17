@@ -107,6 +107,7 @@ class Summary extends Component {
 
         <div className='col-3 col-md-3'>
           <div className='col-12 col-sm-6'>
+            <h4>Add Product</h4>
             <ProductForm 
               categories={ categories }
               createHandler={ createHandler }/>
