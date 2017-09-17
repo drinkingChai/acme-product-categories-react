@@ -34,11 +34,14 @@ class Summary extends Component {
     const { categories, products } = this.state
 
     // all of this after axios
-    const category = categories.find(c=> c.id == product.categoryId)
-    if (category) category.products.push(product)
-    products.push(product)
+    return axios.post('/api/products', product)
+    .then(prod=> {
+      const category = categories.find(c=> c.id == prod.categoryId)
+      if (category) category.products.push(prod)
+      products.push(prod)
 
-    this.setState({ categories, products })
+      this.setState({ categories, products })
+    })
   }
 
   updateHandler(product) {
@@ -47,16 +50,19 @@ class Summary extends Component {
     let { categories, products } = this.state
 
     // after axios
-    categories = categories.map(category=> {
+    return axios.put(`/api/products/${product.id}`, product)
+    .then(()=> {
+      categories = categories.map(category=> {
       category.products = category.products.filter(prod=> prod.id != product.id)
-      return category
-    })
-    const category = categories.find(c=> c.id == product.categoryId)
-    if (category) category.products.push(product)
-    const index = products.findIndex(prod=> prod.id == product.id)
-    products[index] = product
+        return category
+      })
+      const category = categories.find(c=> c.id == product.categoryId)
+      if (category) category.products.push(product)
+      const index = products.findIndex(prod=> prod.id == product.id)
+      products[index] = product
 
-    this.setState({ categories, products })
+      this.setState({ categories, products }) 
+    })
   }
 
   deleteHandler(product) {
@@ -66,13 +72,16 @@ class Summary extends Component {
     let { categories, products } = this.state
 
     // axios
-    products = products.filter(prod=> prod.id != product.id)
-    categories = categories.map(category=> {
-      category.products = category.products.filter(prod=> prod.id != product.id)
-      return category
-    })
+    return axios.delete(`/api/products/${product.id}`)
+    .then(()=> {
+      products = products.filter(prod=> prod.id != product.id)
+      categories = categories.map(category=> {
+        category.products = category.products.filter(prod=> prod.id != product.id)
+        return category
+      })
 
-    this.setState({ categories, products }) 
+       this.setState({ categories, products })
+    })
   }
 
   render() {
