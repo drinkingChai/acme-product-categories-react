@@ -52,23 +52,36 @@ class ProductForm extends Component {
     console.log('submitted!')
 
     const { updateHandler, createHandler  } = this.props
-    updateHandler ? updateHandler(this.state.product) : createHandler(this.state.product) 
+    if (updateHandler) {
+      updateHandler(this.state.product)
+      .then(()=> this.setState({ error: '' }))
+      .catch(err=> this.setState({ error: err.response.data.errors[0].message }))
+    } else {
+      createHandler(this.state.product)
+      .then(()=> this.setState({ error: '' }))
+      .catch(err=> this.setState({ error: err.response.data.errors[0].message }))
+    }
   }
 
   onDeleteHandler(ev) {
     ev.preventDefault()
     
     this.props.deleteHandler(this.state.product)
+    .then(()=> this.setState({ error: '' }))
+    .catch(err=> this.setState({ error: err.response.data.errors[0].message }))
   }
 
   render() {
     const { categories } = this.props
+    const { error } = this.state
     const { name, price, inStock, categoryId, id } = this.state.product
     const { onChangeHandler, onSubmitHandler, onDeleteHandler } = this
     const inStockId = `inStock${ id ? id : 0 }`
 
     return (
       <form onSubmit={ onSubmitHandler }>
+        { error.length ? <Error message={ error }/> : null }
+
         <div>
           <label htmlFor='name'>Name</label>
           <input name='name' value={ name } onChange={ onChangeHandler }/>
