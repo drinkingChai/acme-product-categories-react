@@ -6,11 +6,14 @@ class ProductForm extends Component {
   constructor() {
     super()
     this.state = {
-      name: '',
-      price: 0,
-      inStock: false,
-      categoryId: null,
-      id: 0
+      product: {
+        name: '',
+        price: 0,
+        inStock: false,
+        categoryId: null,
+        id: 0
+      },
+      error: ''
     }
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onSubmitHandler = this.onSubmitHandler.bind(this)
@@ -18,31 +21,30 @@ class ProductForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.product) {
-      const { name, price, inStock, categoryId, id } = this.props.product
-      this.setState({ name, price, inStock, categoryId, id })
-    }
+    if (this.props.product) this.setState({ product: this.props.product })
   }
 
   onChangeHandler(ev) {
     console.log('changed!')
 
     const { name, value } = ev.target
+    const { product } = this.state
     switch(name) {
       case 'name':
-        this.setState({ name: value })
+        product.name = value
         break
       case 'price':
-        this.setState({ price: value * 1 })
+        product.price = value * 1
         break
       case 'inStock':
-        this.setState({ inStock: !this.state.inStock })
+        product.inStock = !product.inStock
         break
       case 'categoryId':
-        this.setState({ categoryId: value })
+        product.categoryId = value
         break
       default:
     }
+    this.setState({ product })
   }
 
   onSubmitHandler(ev) {
@@ -50,18 +52,18 @@ class ProductForm extends Component {
     console.log('submitted!')
 
     const { updateHandler, createHandler  } = this.props
-    updateHandler ? updateHandler(this.state) : createHandler(this.state) 
+    updateHandler ? updateHandler(this.state.product) : createHandler(this.state.product) 
   }
 
   onDeleteHandler(ev) {
     ev.preventDefault()
     
-    this.props.deleteHandler(this.state)
+    this.props.deleteHandler(this.state.product)
   }
 
   render() {
     const { categories } = this.props
-    const { name, price, inStock, categoryId, id } = this.state
+    const { name, price, inStock, categoryId, id } = this.state.product
     const { onChangeHandler, onSubmitHandler, onDeleteHandler } = this
     const inStockId = `inStock${ id ? id : 0 }`
 
