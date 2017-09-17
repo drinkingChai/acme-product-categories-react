@@ -12,7 +12,7 @@ const ProductList = (props) => {
     <div>
     {
       products.map(product=> (
-        <div key={ product.id } className='col-6 col-md-6 col-sm-6'>
+        <div key={ product.id } className='col-4 col-md-6 col-sm-4'>
           <ProductForm
             product={ product }
             categories={ categories }
