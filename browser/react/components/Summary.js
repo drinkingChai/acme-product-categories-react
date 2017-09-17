@@ -27,13 +27,16 @@ class Summary extends Component {
     })
   }
 
-  createHandler() {
+  createHandler(product) {
+    console.log('created!')
   }
 
-  updateHandler() {
+  updateHandler(product) {
+    console.log('updated!')
   }
 
-  deleteHandler() {
+  deleteHandler(product) {
+    console.log('deleted!')
   }
 
   render() {

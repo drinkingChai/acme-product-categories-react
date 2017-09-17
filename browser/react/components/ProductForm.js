@@ -14,6 +14,7 @@ class ProductForm extends Component {
     }
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onSubmitHandler = this.onSubmitHandler.bind(this)
+    this.onDeleteHandler = this.onDeleteHandler.bind(this)
   }
 
   componentDidMount() {
@@ -47,13 +48,22 @@ class ProductForm extends Component {
   onSubmitHandler(ev) {
     ev.preventDefault()
     console.log('submitted!')
+
+    const { updateHandler, createHandler  } = this.props
+    updateHandler ? updateHandler(this.state) : createHandler(this.state) 
+  }
+
+  onDeleteHandler(ev) {
+    ev.preventDefault()
+    
+    this.props.deleteHandler()
   }
 
   render() {
-    const { product, categories, updateHandler, createHandler, deleteHandler } = this.props
+    const { categories } = this.props
     const { name, price, inStock, categoryId, id } = this.state
-    const { onChangeHandler, onSubmitHandler } = this
-    const inStockId = `inStock${ product ? product.id : 0 }`
+    const { onChangeHandler, onSubmitHandler, onDeleteHandler } = this
+    const inStockId = `inStock${ id ? id : 0 }`
 
     return (
       <form onSubmit={ onSubmitHandler }>
@@ -80,7 +90,7 @@ class ProductForm extends Component {
         </select>
 
         <button className='btn-blue-filled'>Save</button>
-        { deleteHandler ? <button className='btn-red-filled'>Delete</button> : null }
+        { id ? <button className='btn-red-filled' onClick={ onDeleteHandler }>Delete</button> : null }
       </form>
     )
   }
