@@ -58,7 +58,16 @@ class ProductForm extends Component {
       .catch(err=> this.setState({ error: err.response.data.errors[0].message }))
     } else {
       createHandler(this.state.product)
-      .then(()=> this.setState({ error: '' }))
+      .then(()=> this.setState({ 
+        error: '',
+        product: {
+          name: '',
+          price: 0,
+          inStock: false,
+          categoryId: null,
+          id: 0
+        }
+      }))
       .catch(err=> this.setState({ error: err.response.data.errors[0].message }))
     }
   }
