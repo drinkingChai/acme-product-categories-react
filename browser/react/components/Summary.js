@@ -29,21 +29,58 @@ class Summary extends Component {
 
   createHandler(product) {
     console.log('created!')
+    console.log(product)
+ 
+    const { categories, products } = this.state
+
+    // all of this after axios
+    const category = categories.find(c=> c.id == product.categoryId)
+    if (category) category.products.push(product)
+    products.push(product)
+
+    this.setState({ categories, products })
   }
 
   updateHandler(product) {
     console.log('updated!')
+
+    let { categories, products } = this.state
+
+    // after axios
+    categories = categories.map(category=> {
+      category.products = category.products.filter(prod=> prod.id != product.id)
+      return category
+    })
+    const category = categories.find(c=> c.id == product.categoryId)
+    if (category) category.products.push(product)
+    const index = products.findIndex(prod=> prod.id == product.id)
+    products[index] = product
+
+    this.setState({ categories, products })
   }
 
   deleteHandler(product) {
     console.log('deleted!')
+    console.log(product)
+
+    let { categories, products } = this.state
+
+    // axios
+    products = products.filter(prod=> prod.id != product.id)
+    categories = categories.map(category=> {
+      category.products = category.products.filter(prod=> prod.id != product.id)
+      return category
+    })
+
+    this.setState({ categories, products }) 
   }
 
   render() {
     const { products, categories } = this.state
     const { createHandler, updateHandler, deleteHandler } = this
     const mostExpensive = products.map(p=> p).sort((a, b)=> a.price < b.price)[0]
-    const noCat = products.filter(p=> !p.categoryId)
+    const noCat = products.filter(p=> !(p.categoryId * 1)) // wont need *1 after axios
+    const notInStock = products.filter(p=> !(p.inStock * 1))
 
     return (
       <div>
@@ -73,6 +110,7 @@ class Summary extends Component {
           { noCat.length ? <p>{ noCat.length } product(s) have no categories.</p> : null }
           <hr/>
           { products.length ? <p>The most expensive product is { mostExpensive.name } at { mostExpensive.price }</p> : null } 
+          { notInStock.length ? <p>Products not in stock are { notInStock.map(p=> p.name).join(' ') }</p> : null }
           </div>
         </div>
       </div>

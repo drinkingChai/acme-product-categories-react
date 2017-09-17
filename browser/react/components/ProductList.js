@@ -7,6 +7,7 @@ const ProductList = (props) => {
           categories, 
           updateHandler, 
           deleteHandler } = props
+
   return (
     <div>
     {

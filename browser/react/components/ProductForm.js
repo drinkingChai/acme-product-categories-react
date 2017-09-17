@@ -56,7 +56,7 @@ class ProductForm extends Component {
   onDeleteHandler(ev) {
     ev.preventDefault()
     
-    this.props.deleteHandler()
+    this.props.deleteHandler(this.state)
   }
 
   render() {
