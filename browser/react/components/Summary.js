@@ -35,6 +35,7 @@ class Summary extends Component {
 
     // all of this after axios
     return axios.post('/api/products', product)
+    .then(response=> response.data)
     .then(prod=> {
       const category = categories.find(c=> c.id == prod.categoryId)
       if (category) category.products.push(prod)
@@ -50,7 +51,9 @@ class Summary extends Component {
     let { categories, products } = this.state
 
     // after axios
+    product.categoryId = product.categoryId * 1 ? product.categoryId : null
     return axios.put(`/api/products/${product.id}`, product)
+    .then(response=> response.data)
     .then(()=> {
       categories = categories.map(category=> {
       category.products = category.products.filter(prod=> prod.id != product.id)
@@ -73,6 +76,7 @@ class Summary extends Component {
 
     // axios
     return axios.delete(`/api/products/${product.id}`)
+    .then(response=> response.data)
     .then(()=> {
       products = products.filter(prod=> prod.id != product.id)
       categories = categories.map(category=> {
